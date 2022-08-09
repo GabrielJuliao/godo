@@ -1,0 +1,10 @@
+{
+  "macros": [
+    {
+      "macroName": "hello-cmd",
+      "executable": "cmd.exe",
+      "arguments": "/c echo Hello",
+      "description": "Echo hello message from cmd"
+    }
+  ]
+}
