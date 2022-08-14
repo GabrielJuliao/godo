@@ -29,12 +29,16 @@ func readConfigurationFile() Configuration {
 	dataBytes, err := os.ReadFile(filePath)
 
 	if err != nil {
+		log.Println("The configuration file could not be loaded.")
 		log.Fatal(err)
 	}
 
 	err = json.Unmarshal(dataBytes, &config)
 
 	if err != nil {
+		log.Println("Something went wrong when parsing the configuration file, please check if the file is a valid JSON.")
+		bStr := "ew0KICAibWFjcm9zIjogWw0KICAgIHsNCiAgICAgICJtYWNyb05hbWUiOiAiaGVsbG8tY21kIiwNCiAgICAgICJleGVjdXRhYmxlIjogImNtZC5leGUiLA0KICAgICAgImFyZ3VtZW50cyI6ICIvYyBlY2hvIEhlbGxvIFdvcmxkIiwNCiAgICAgICJkZXNjcmlwdGlvbiI6ICJFY2hvIEhlbGxvIFdvcmxkIG1lc3NhZ2UgZnJvbSBjb21tYW5kIHByb21wdCINCiAgICB9DQogIF0NCn0NCg=="
+		log.Printf("Configuration file valid format: \n%s\n", b64Decoder(bStr))
 		log.Fatal(err)
 	}
 
@@ -61,13 +65,15 @@ func execMacro(argv []string) {
 			for _, arg := range argv[1:] {
 				args = append(args, arg)
 			}
-
+			fmt.Printf("Macro name: %s\n", macro.MacroName)
+			fmt.Printf("Description: %s\n", macro.Description)
+			fmt.Printf("Run: %s %s\n\n", macro.Executable, strings.Join(args, " "))
 			execCmd(macro.Executable, args)
 			os.Exit(0)
 		}
 
 	}
-	fmt.Printf("\n%s is not a known macro\n", argv)
+	fmt.Printf("%s is not a known macro.\n", argv[0])
 
 }
 
@@ -91,23 +97,33 @@ func execCmd(executableName string, arguments []string) {
 	}
 }
 
-func printInit() {
-	b64str := "ICAgX19fXyAgICBfX18gICAgX19fXyAgICAgX19fICANCiAgLyBfX198ICAvIF8gXCAgfCAgXyBcICAgLyBfIFwgDQogfCB8ICBfICB8IHwgfCB8IHwgfCB8IHwgfCB8IHwgfA0KIHwgfF98IHwgfCB8X3wgfCB8IHxffCB8IHwgfF98IHwNCiAgXF9fX198ICBcX19fLyAgfF9fX18vICAgXF9fXy8gIHYwLjAuMQ0KDQpodHRwczovL2dpdGh1Yi5jb20vR2FicmllbEp1bGlhby9nb2Rv"
-	data, err := b64.StdEncoding.DecodeString(b64str)
+func b64Decoder(b64Str string) string {
+	data, err := b64.StdEncoding.DecodeString(b64Str)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%s\n", string(data))
+	return string(data)
+}
+
+func isArgsValid(args []string) bool {
+	for _, arg := range args {
+		if arg == "godo" {
+			log.Fatal("cannot call godo inside it self.")
+		}
+	}
+	return true
 }
 
 func main() {
-	printInit()
-	argv := os.Args[1:]
-	argc := len(argv)
-
-	if argc > 0 {
-		execMacro(argv)
+	fmt.Printf(
+		"\n%s\n\n",
+		b64Decoder("4pSM4pSA4pSQ4pSM4pSA4pSQ4pSM4pSs4pSQ4pSM4pSA4pSQDQrilIIg4pSs4pSCIOKUgiDilILilILilIIg4pSCDQrilJTilIDilJjilJTilIDilJjilIDilLTilJjilJTilIDilJggdjAuMC4xDQpodHRwczovL2dpdGh1Yi5jb20vR2FicmllbEp1bGlhby9nb2Rv"),
+	)
+	appArguments := os.Args[1:]
+	if len(appArguments) > 0 && isArgsValid(appArguments) {
+		execMacro(appArguments)
 	} else {
-		fmt.Printf("\nUsage: godo [macro name] [arguments]\n")
+		fmt.Println("Usage: godo [ macro name ] [ extras arguments ]")
+		fmt.Println("Note: [ extras arguments ] will be appended to the end of the string arguments, defined in the configuration file.")
 	}
 }
