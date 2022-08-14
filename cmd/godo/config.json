@@ -3,8 +3,14 @@
     {
       "macroName": "hello-cmd",
       "executable": "cmd.exe",
-      "arguments": "/c echo Hello",
-      "description": "Echo hello message from cmd"
+      "arguments": "/c echo Hello World",
+      "description": "Echo Hello World message from command prompt"
+    },
+    {
+      "macroName": "ping-google",
+      "executable": "cmd.exe",
+      "arguments": "/c ping 8.8.8.8",
+      "description": "Ping google DNS"
     }
   ]
 }
