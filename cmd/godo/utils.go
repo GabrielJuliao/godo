@@ -30,10 +30,7 @@ func getExecutablePath() string {
 
 func verifyFilePath(path string) bool {
 	_, err := os.Stat(path)
-	if !os.IsNotExist(err) {
-		return true
-	}
-	return false
+	return !os.IsNotExist(err)
 }
 
 func printUsage() {

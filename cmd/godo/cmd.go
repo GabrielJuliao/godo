@@ -25,4 +25,10 @@ func execCmd(executableName string, arguments []string) {
 		fmt.Print(line)
 		line, err = reader.ReadString('\n')
 	}
+
+	// Wait for the command to finish
+	err = cmd.Wait()
+	if err != nil {
+		fmt.Println("Error waiting for command to finish:", err)
+	}
 }
