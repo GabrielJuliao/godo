@@ -15,14 +15,6 @@ Make sure you have the following installed on your machine:
 
     ```bash
     git clone https://github.com/GabrielJuliao/godo.git
-    
-    cd godo
-    ```
-
-2. Navigate to the directory containing the Go source code:
-
-    ```bash
-    cd cmd/godo
     ```
 
 ## Build the Go Application
