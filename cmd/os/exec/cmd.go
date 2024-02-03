@@ -1,4 +1,4 @@
-package main
+package exec
 
 import (
 	"bufio"
@@ -7,7 +7,7 @@ import (
 	"os/exec"
 )
 
-func execCmd(executableName string, arguments []string) {
+func Cmd(executableName string, arguments []string) {
 	cmd := exec.Command(executableName, arguments...)
 	stdout, err := cmd.StdoutPipe()
 

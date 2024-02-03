@@ -1,14 +1,16 @@
-package main
+package service
 
 import (
 	"fmt"
+	"github.com/gabrieljuliao/godo/cmd/configuration"
+	"github.com/gabrieljuliao/godo/cmd/os/exec"
 	"log"
 	"os"
 	"strings"
 )
 
-func execMacro(argv []string) {
-	config := readConfigurationFile()
+func ExecMacro(argv []string) {
+	config := configuration.ReadConfigurationFile()
 	macros := config.Macros
 
 	for _, macro := range macros {
@@ -24,7 +26,7 @@ func execMacro(argv []string) {
 			fmt.Printf("Description: %s\n", macro.Description)
 			fmt.Printf("Run: %s %s\n\n", macro.Executable, strings.Join(args, " "))
 			fmt.Println("")
-			execCmd(macro.Executable, args)
+			exec.Cmd(macro.Executable, args)
 			os.Exit(0)
 		}
 

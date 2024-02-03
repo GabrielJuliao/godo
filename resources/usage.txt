@@ -1,0 +1,2 @@
+Usage: godo [ macro name ] [ extras arguments ]
+Note: [ extras arguments ] will be appended to the end of the string arguments, defined in the configuration file.

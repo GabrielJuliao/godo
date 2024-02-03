@@ -1,0 +1,5 @@
+macros:
+- name: hello-world
+  executable: echo
+  arguments: "Hello World"
+  description: Broadcasts 'Hello World' to the intergalactic shell, making aliens on Earth and in space crack a cosmic smile! :)
