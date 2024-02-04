@@ -2,7 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"github.com/gabrieljuliao/godo/cmd/context"
+	"gopkg.in/yaml.v3"
 	"log"
 	"os"
 	"path/filepath"
@@ -25,10 +25,37 @@ func VerifyFilePath(path string) bool {
 	return !os.IsNotExist(err)
 }
 
-func PrintUsage() {
-	fmt.Println(context.ApplicationInfo.UsageMessage)
+func IsArgsValid(args []string) bool {
+	for _, arg := range args {
+		if arg == "godo" {
+			log.Fatal("Cannot call godo inside it self.")
+		}
+	}
+	return true
 }
 
-func PrintBanner() {
-	fmt.Printf("\n%s\n\n", context.ApplicationInfo.Banner)
+func PrettyPrintYaml(obj any) {
+
+	yamlData, err := yaml.Marshal(obj)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	fmt.Println(string(yamlData))
+}
+
+func ReadYamlFile(path string, obj any) error {
+	dataBytes, err := os.ReadFile(path)
+
+	if err != nil {
+		return err
+	}
+
+	err = yaml.Unmarshal(dataBytes, obj)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -3,11 +3,41 @@ package main
 import (
 	_ "embed"
 	"github.com/gabrieljuliao/godo/cmd/context"
+	"github.com/gabrieljuliao/godo/cmd/info"
 	"github.com/gabrieljuliao/godo/cmd/service"
 	"github.com/gabrieljuliao/godo/cmd/utils"
-	"log"
 	"os"
 )
+
+func main() {
+	start()
+	choice()
+}
+
+func choice() {
+	var action = ""
+	argv := os.Args[1:]
+
+	if len(argv) > 0 {
+		action = argv[0]
+	}
+
+	switch action {
+	case "list":
+		context.ListConfiguration()
+	default:
+		executeMacro(argv)
+	}
+
+}
+
+func executeMacro(appArguments []string) {
+	if len(appArguments) > 0 && utils.IsArgsValid(appArguments) && appArguments[0] != "-h" && appArguments[0] != "--help" {
+		service.ExecMacro(appArguments)
+	} else {
+		info.PrintUsage()
+	}
+}
 
 //go:embed VERSION
 var appVersion string
@@ -21,22 +51,8 @@ var appUsageMsg string
 //go:embed resources/config_file_example.yaml
 var appConfigFileExample string
 
-func main() {
-	context.NewAppInfo(appVersion, appUsageMsg, appBanner, appConfigFileExample)
-	utils.PrintBanner()
-	appArguments := os.Args[1:]
-	if len(appArguments) > 0 && isArgsValid(appArguments) && appArguments[0] != "-h" && appArguments[0] != "--help" {
-		service.ExecMacro(appArguments)
-	} else {
-		utils.PrintUsage()
-	}
-}
-
-func isArgsValid(args []string) bool {
-	for _, arg := range args {
-		if arg == "godo" {
-			log.Fatal("Cannot call godo inside it self.")
-		}
-	}
-	return true
+func start() {
+	info.NewAppInfo(appVersion, appUsageMsg, appBanner, appConfigFileExample)
+	info.PrintBanner()
+	context.NewContext()
 }

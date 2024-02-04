@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"github.com/gabrieljuliao/godo/cmd/configuration"
+	"github.com/gabrieljuliao/godo/cmd/context"
 	"github.com/gabrieljuliao/godo/cmd/os/exec"
 	"log"
 	"os"
@@ -10,10 +10,7 @@ import (
 )
 
 func ExecMacro(argv []string) {
-	config := configuration.ReadConfigurationFile()
-	macros := config.Macros
-
-	for _, macro := range macros {
+	for _, macro := range context.ApplicationContext.Configuration.Macros {
 
 		if macro.Name == argv[0] {
 			args := strings.Fields(macro.Arguments)
@@ -21,6 +18,7 @@ func ExecMacro(argv []string) {
 			for _, arg := range argv[1:] {
 				args = append(args, arg)
 			}
+
 			fmt.Println("")
 			fmt.Printf("Macro name: %s\n", macro.Name)
 			fmt.Printf("Description: %s\n", macro.Description)
@@ -32,5 +30,4 @@ func ExecMacro(argv []string) {
 
 	}
 	log.Printf("%s is not a known macro.\n", argv[0])
-
 }
