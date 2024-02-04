@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"github.com/gabrieljuliao/godo/cmd/context"
+	"github.com/gabrieljuliao/godo/cmd/configuration"
 	"github.com/gabrieljuliao/godo/cmd/os/exec"
 	"log"
 	"os"
@@ -10,7 +10,8 @@ import (
 )
 
 func ExecMacro(argv []string) {
-	for _, macro := range context.ApplicationContext.Configuration.Macros {
+	verifyArgs(argv)
+	for _, macro := range configuration.ApplicationConfiguration.Macros {
 
 		if macro.Name == argv[0] {
 			args := strings.Fields(macro.Arguments)
@@ -30,4 +31,12 @@ func ExecMacro(argv []string) {
 
 	}
 	log.Printf("%s is not a known macro.\n", argv[0])
+}
+
+func verifyArgs(args []string) {
+	for _, arg := range args {
+		if arg == "godo" {
+			log.Fatal("Cannot call godo inside it self.")
+		}
+	}
 }

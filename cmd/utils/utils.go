@@ -25,15 +25,6 @@ func VerifyFilePath(path string) bool {
 	return !os.IsNotExist(err)
 }
 
-func IsArgsValid(args []string) bool {
-	for _, arg := range args {
-		if arg == "godo" {
-			log.Fatal("Cannot call godo inside it self.")
-		}
-	}
-	return true
-}
-
 func PrettyPrintYaml(obj any) {
 
 	yamlData, err := yaml.Marshal(obj)

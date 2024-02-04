@@ -26,7 +26,7 @@ func NewAppInfo(version string, usageMessage string, banner string, configFileEx
 }
 
 func PrintUsage() {
-	fmt.Printf("\n%s\n", AppInfo.UsageMessage)
+	fmt.Printf("%s\n", AppInfo.UsageMessage)
 }
 
 func PrintBanner() {

@@ -1,11 +1,12 @@
 package configuration
 
 import (
+	. "github.com/gabrieljuliao/godo/cmd/consts"
+	"github.com/gabrieljuliao/godo/cmd/env"
 	"github.com/gabrieljuliao/godo/cmd/info"
 	"github.com/gabrieljuliao/godo/cmd/models"
 	"github.com/gabrieljuliao/godo/cmd/utils"
 	"log"
-	"os"
 	"regexp"
 	"strings"
 )
@@ -14,10 +15,11 @@ type Configuration struct {
 	Macros []models.Macro
 }
 
-func NewConfiguration() Configuration {
-	var config Configuration
+var ApplicationConfiguration Configuration
 
-	err := utils.ReadYamlFile(findConfigFilePath(), &config)
+func NewConfiguration() *Configuration {
+
+	err := utils.ReadYamlFile(env.Properties[GodoConfigurationFilePath], &ApplicationConfiguration)
 	if err != nil {
 		if strings.Contains(err.Error(), "yaml: line") {
 			log.Println("The configuration file could not be loaded. Please make sure the file is a valid YAML")
@@ -27,40 +29,9 @@ func NewConfiguration() Configuration {
 		log.Fatal(err)
 	}
 
-	validateConfiguration(config)
+	validateConfiguration(ApplicationConfiguration)
 
-	return config
-}
-
-// TODO make this madness simple!
-func findConfigFilePath() string {
-	var filePath = ""
-
-	filePathEnvVar := os.Getenv("GODO_CONFIGURATION_FILE")
-	pwd := utils.GetExecutablePath() + string(os.PathSeparator)
-	filePathYaml := pwd + "config.yaml"
-	filePathYml := pwd + "config.yml"
-
-	if !utils.VerifyFilePath(filePathEnvVar) {
-		log.Println("Environment variable GODO_CONFIGURATION_FILE is not set. Falling back to default location(s)")
-		switch {
-		case utils.VerifyFilePath(filePathYaml):
-			log.Printf("Configuration file located at %s", filePathYaml)
-			filePath = filePathYaml
-		case utils.VerifyFilePath(filePathYml):
-			log.Printf("Configuration file located at %s", filePathYml)
-			filePath = filePathYml
-		default:
-			log.Fatalf("Could locate default configuration file(s) [%s, %s]", filePathYaml, filePathYml)
-		}
-	} else if utils.VerifyFilePath(filePathEnvVar) {
-		log.Printf("Configuration file located at %s", filePathEnvVar)
-		filePath = filePathEnvVar
-	} else {
-		log.Fatalf("Could not locate configuration defined in GODO_CONFIGURATION_FILE=%s environment variable.", filePathEnvVar)
-	}
-
-	return filePath
+	return &ApplicationConfiguration
 }
 
 func validateConfiguration(configuration Configuration) {
@@ -100,4 +71,8 @@ func isMacroNameCompliant(str string) bool {
 	pattern := `^([a-z]+(-[a-z]+)*)?$`
 	match, _ := regexp.MatchString(pattern, str)
 	return match
+}
+
+func ListConfiguration() {
+	utils.PrettyPrintYaml(ApplicationConfiguration)
 }
