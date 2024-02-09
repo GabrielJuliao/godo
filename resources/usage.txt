@@ -1,2 +1,16 @@
-Usage: godo [ macro name ] [ extras arguments ]
+Usage: godo [ macro name or action ] [--godo-< option >] [ extras arguments ]
 Note: [ extras arguments ] will be appended to the end of the string arguments, defined in the configuration file.
+
+Example: godo my-macro
+Example: godo my-macro my-arg-1 my-arg2
+Example: godo --godo-config-file /opt/godo/config.yaml my-macro my-arg-1 my-arg2
+Example: godo --godo-config-editor nano edit
+
+Actions:
+    list        list all the macros
+    edit        opens the config with default OS text editor (can be overwritten with options)
+
+Options:
+    --godo-config-file              sets path for configuration file
+    --godo-config-editor            sets the default text editor
+    --godo-config-editor-args       sets the args for the default text editor
