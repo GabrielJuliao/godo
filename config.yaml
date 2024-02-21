@@ -32,6 +32,11 @@ macros:
     arguments: -f ./examples/hello.ps1 godo
     description: Hello from powershell
 
+  - name: interactive-sh
+    executable: bash
+    arguments: ./examples/interactive.sh godo
+    description: Interactive hello from Shell
+
   # Other apps execution
   - name: run-spring-app
     executable: java
