@@ -5,6 +5,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 )
 
@@ -49,4 +50,9 @@ func ReadYamlFile(path string, obj any) error {
 	}
 
 	return nil
+}
+
+func IsBinaryOnPath(binaryName string) bool {
+	_, err := exec.LookPath(binaryName)
+	return err == nil
 }

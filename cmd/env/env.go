@@ -38,7 +38,7 @@ func FindConfigFilePath() {
 
 	if filePath == GodoConfigurationFileName {
 		filePath = utils.GetExecutablePath() + string(os.PathSeparator) + filePath
-		log.Printf("Environment variable %s is not set. Falling back to default location(s)", GodoConfigurationFilePath)
+		log.Printf("%s environment variable is not set. Falling back to default location(s).\n", GodoConfigurationFilePath)
 	}
 
 	if utils.VerifyFilePath(filePath) {

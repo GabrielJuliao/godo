@@ -1,14 +1,17 @@
-Usage: godo [ macro name or action ] [--godo-< option >] [ extras arguments ]
-Note: [ extras arguments ] will be appended to the end of the string arguments, defined in the configuration file.
+Usage:
+    godo [macro name or action] [--godo-<option>] [extras arguments]
 
-Example: godo my-macro
-Example: godo my-macro my-arg-1 my-arg2
-Example: godo --godo-config-file /opt/godo/config.yaml my-macro my-arg-1 my-arg2
-Example: godo --godo-config-editor nano edit
+    [extras arguments] will be appended to the end of the string arguments, defined in the configuration file.
+
+Examples:
+    godo ping-google
+    godo clear-database --db-url "jdbc:oracle:thin:@//localhost:1521/test_db" --db-password 12345
+    godo --godo-config-file /opt/godo/config.yaml list
+    godo --godo-config-editor vi edit
 
 Actions:
-    list        List all the macros.
-    edit        Opens the configuration file with default OS text editor (can be overwritten with options).
+    list                            List all the macros.
+    edit                            Opens the configuration file with default OS text editor (can be overwritten with options).
 
 Options:
     --godo-config-file              Sets the path for configuration file.

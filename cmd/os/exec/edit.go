@@ -6,41 +6,52 @@ import (
 	"github.com/gabrieljuliao/godo/cmd/utils"
 	"log"
 	"os"
-	"os/exec"
 	"runtime"
 	"strings"
 )
 
 func OpenConfigurationEditor() {
-	var cmd *exec.Cmd
-
-	confEditArgs := strings.Split(env.Properties[GodoConfigurationEditorArgs], ",")
+	var args []string
 	filePath := env.Properties[GodoConfigurationFilePath]
-
-	confEditArgs = append(confEditArgs, filePath)
-
 	configEditor := env.Properties[GodoConfigurationEditor]
 
 	if utils.IsStringEmptyOrNil(configEditor) {
 		switch runtime.GOOS {
 		case "darwin":
-			cmd = exec.Command("open", filePath)
+			args = append(args, filePath)
+			Cmd("open", args)
 		case "linux":
-			cmd = exec.Command("xdg-open", filePath)
+			args = append(args, filePath)
+			editor := findLinuxDefaultTextEditor()
+			if !utils.IsStringEmptyOrNil(editor) {
+				Cmd(editor, args)
+			} else {
+				log.Fatalf("Could not determine the default text editor. Please provide the default text editor either by using the option flags or the environment variables.")
+			}
 		case "windows":
-			cmd = exec.Command("cmd", "/c", "start", filePath)
+			args = []string{"/c", "start", filePath}
+			Cmd("cmd", args)
 		default:
-			log.Println("The default configuration does not support this OS.")
+			log.Println("Unsupported Operating System.")
 			log.Fatal(os.ErrNotExist)
 		}
 	} else {
-		log.Printf("Edit command: %s %s", configEditor, confEditArgs)
-		cmd = exec.Command(configEditor, confEditArgs...)
+		customArgs := env.Properties[GodoConfigurationEditorArgs]
+		if !utils.IsStringEmptyOrNil(customArgs) {
+			args = append(args, strings.Split(customArgs, ",")...)
+		}
+		args = append(args, filePath)
+		Cmd(configEditor, args)
 	}
+}
 
-	err := cmd.Run()
+func findLinuxDefaultTextEditor() string {
+	textEditors := []string{"xdg-open", "nano", "vi"}
 
-	if err != nil {
-		log.Fatal(err)
+	for _, editor := range textEditors {
+		if utils.IsBinaryOnPath(editor) {
+			return editor
+		}
 	}
+	return ""
 }
