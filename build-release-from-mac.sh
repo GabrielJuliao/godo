@@ -114,7 +114,7 @@ main() {
             (
                 cd dist/release || exit
                 zip -j "godo-${version}-${output_name}.zip" "../${os}/${arch}/godo.exe"
-                shasum -a 256 "godo-${version}-${output_name}.zip" | awk '{print $1}' >"godo-${version}-${output_name}.sha256sum"
+                shasum -a 256 "godo-${version}-${output_name}.zip" >"godo-${version}-${output_name}.sha256sum"
             )
             buildReleaseLink "$os" "$arch" "$version" "godo-${version}-${output_name}.zip" "$(cat dist/release/godo-${version}-${output_name}.sha256sum | awk '{print $1}')" "godo-${version}-${output_name}.sha256sum"
         fi
@@ -125,7 +125,7 @@ main() {
             (
                 cd dist/release || exit
                 tar -czf "godo-${version}-${output_name}.tar.gz" -C "../${os}/${arch}" godo
-                shasum -a 256 "godo-${version}-${output_name}.tar.gz" | awk '{print $1}' >"godo-${version}-${output_name}.sha256sum"
+                shasum -a 256 "godo-${version}-${output_name}.tar.gz" >"godo-${version}-${output_name}.sha256sum"
             )
             buildReleaseLink "$os" "$arch" "$version" "godo-${version}-${output_name}.tar.gz" "$(cat dist/release/godo-${version}-${output_name}.sha256sum | awk '{print $1}')" "godo-${version}-${output_name}.sha256sum"
         fi
