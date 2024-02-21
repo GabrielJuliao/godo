@@ -25,16 +25,16 @@ var appUsageMsg string
 var appConfigFileExample string
 
 func main() {
-	env.InitEnv()
-	env.FindConfigFilePath()
 	info.NewAppInfo(appVersion, appUsageMsg, appBanner, appConfigFileExample)
 	info.PrintBanner()
-	preConfigActions(filterGodoArgs())
+
+	env.InitEnv()
+	env.FindConfigFilePath()
+
+	preConfigActions(filterGodoArgs(os.Args[1:]))
 }
 
-func filterGodoArgs() []string {
-	args := os.Args[1:]
-
+func filterGodoArgs(args []string) []string {
 	for i, arg := range args {
 		if strings.HasPrefix(arg, "--godo") {
 			arg = strings.Replace(arg, "--godo-", "", -1)
