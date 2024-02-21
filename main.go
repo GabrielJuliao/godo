@@ -27,9 +27,7 @@ var appConfigFileExample string
 func main() {
 	info.NewAppInfo(appVersion, appUsageMsg, appBanner, appConfigFileExample)
 	info.PrintBanner()
-
 	env.InitEnv()
-	env.FindConfigFilePath()
 
 	preConfigActions(filterGodoArgs(os.Args[1:]))
 }
@@ -55,6 +53,7 @@ func filterGodoArgs(args []string) []string {
 }
 
 func preConfigActions(argv []string) {
+	env.FindConfigFilePath()
 	var action = ""
 
 	if len(argv) > 0 {
