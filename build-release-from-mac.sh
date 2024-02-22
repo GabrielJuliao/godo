@@ -97,7 +97,7 @@ main() {
 
     log $LOG_LEVEL_DEBUG "Platforms to be built: ${platforms[*]}"
 
-    echo "GODO ${version} add title here" >RELEASE.md
+    echo "**Download GODO ${version}. The common platform binaries are available below:**" >RELEASE.md
     mkdir -p dist/release
 
     for platform in "${platforms[@]}"; do
