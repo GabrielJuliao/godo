@@ -1,7 +1,7 @@
 
 # GODO
 
-A simple command line tool to execute macros
+A versatile and user-friendly command-line tool designed to streamline your most frequently used actions, ranging from simple system commands to executing custom scripts and running applications. With GODO, you can effortlessly automate repetitive tasks, improve productivity, and simplify your workflow.
 
 ## Usage
 
