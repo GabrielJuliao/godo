@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"github.com/alecthomas/chroma/v2/quick"
 	"gopkg.in/yaml.v3"
 	"log"
 	"os"
@@ -33,11 +32,7 @@ func PrettyPrintYaml(obj any) {
 		log.Fatal(err.Error())
 	}
 
-	err = quick.Highlight(os.Stdout, string(yamlData), "yaml", "terminal16m", "github-dark")
-	if err != nil {
-		log.Println("Could not highlight the syntax of the yaml file. Using fallback.")
-		fmt.Println(string(yamlData))
-	}
+	fmt.Println(string(yamlData))
 }
 
 func ReadYamlFile(path string, obj any) error {
