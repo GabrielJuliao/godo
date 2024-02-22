@@ -8,7 +8,11 @@ import (
 	"github.com/gabrieljuliao/godo/cmd/info"
 	"github.com/gabrieljuliao/godo/cmd/os/exec"
 	"github.com/gabrieljuliao/godo/cmd/service"
+	"github.com/gabrieljuliao/godo/cmd/utils"
+	"log"
 	"os"
+	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -35,17 +39,38 @@ func main() {
 func filterGodoArgs(args []string) []string {
 	for i, arg := range args {
 		if strings.HasPrefix(arg, "--godo") {
-			arg = strings.Replace(arg, "--godo-", "", -1)
-			switch arg {
+			if !utils.HasNext(args, i) {
+				log.Fatal("You must provide a value to godo options.")
+			}
+			noPrefixArg := strings.Replace(arg, "--godo-", "", -1)
+			switch noPrefixArg {
 			case "config-file":
-				env.Properties[consts.GodoConfigurationFilePath] = args[i+1]
-				args = args[2:]
+				path := args[i+1]
+				if filepath.IsAbs(path) {
+					env.Properties[consts.GodoConfigurationFilePath] = path
+					args = args[2:]
+				} else {
+					log.Fatalf("Value '%s' for option '%s' is not a valid path.", path, arg)
+				}
 			case "config-editor":
-				env.Properties[consts.GodoConfigurationEditor] = args[i+1]
-				args = args[2:]
+				path := args[i+1]
+				if utils.IsBinaryOnPath(path) {
+					env.Properties[consts.GodoConfigurationEditor] = args[i+1]
+					args = args[2:]
+				} else {
+					log.Fatalf("Could not locate '%s' for option '%s'. Make sure executable is exported to path.", path, arg)
+				}
 			case "config-editor-args":
-				env.Properties[consts.GodoConfigurationEditorArgs] = args[i+1]
-				args = args[2:]
+				regex, _ := regexp.Compile("^(?:[^,\\s]+(?:,[^,\\s]+)*)?$\n")
+				editorArgs := args[i+1]
+				if regex.MatchString(editorArgs) {
+					env.Properties[consts.GodoConfigurationEditorArgs] = args[i+1]
+					args = args[2:]
+				} else {
+					log.Fatalf("Value '%s' for option '%s' does not match the pattern: --arg1,value1,arg-2.", editorArgs, arg)
+				}
+			default:
+				log.Fatalf("Option '%s' does not exist", arg)
 			}
 		}
 	}

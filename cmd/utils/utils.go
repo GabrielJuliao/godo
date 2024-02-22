@@ -60,3 +60,7 @@ func IsBinaryOnPath(binaryName string) bool {
 	_, err := exec.LookPath(binaryName)
 	return err == nil
 }
+
+func HasNext(list []string, currentIndex int) bool {
+	return currentIndex < len(list)-1
+}
