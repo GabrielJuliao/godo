@@ -54,17 +54,17 @@ macros:
   - name: ping-google
     executable: ping
     arguments: 8.8.8.8 -c 4
-    description: Ping google DNS Shell
+    description: Ping Google DNS Shell
 
   - name: ping-google-cmd
     executable: cmd.exe
     arguments: /c ping 8.8.8.8
-    description: Ping google DNS Command prompt
+    description: Ping Google DNS Command Prompt
 
   - name: ping-google-powershell
     executable: powershell.exe
     arguments: ping 8.8.8.8
-    description: Ping google DNS Powershell
+    description: Ping Google DNS Powershell
 
   # Scripts execution
   - name: hello-sh
@@ -75,12 +75,22 @@ macros:
   - name: hello-cmd
     executable: cmd.exe
     arguments: /c .\examples\hello.bat godo
-    description: Hello from Command prompt
+    description: Hello from Command Prompt
 
   - name: hello-powershell
     executable: powershell.exe
     arguments: -f ./examples/hello.ps1 godo
-    description: Hello from powershell
+    description: Hello from Powershell
+
+  - name: hello-git-bash
+    executable: C:/Program Files/Git/bin/bash.exe
+    arguments: -c C:/Users/elonmusk/Downloads/examples/hello.sh
+    description: Hello from Git Bash
+
+  - name: interactive-sh
+    executable: bash
+    arguments: ./examples/interactive.sh
+    description: Interactive hello from Shell
 
   # Other apps execution
   - name: run-spring-app
