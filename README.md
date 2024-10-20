@@ -97,6 +97,12 @@ macros:
     executable: java
     arguments: -jar ./examples/demo-0.0.1-SNAPSHOT.jar
     description: Run my Spring Boot Application
+  
+  - name: risky-action
+    executable: echo
+    arguments: Hey there! Running `sudo rm -r /*` is like hitting the self-destruct button on your computer!
+    isRiskyAction: true
+    description: "A one-way ticket to data oblivion!"
 ```
 
 ## How to Build From Source
