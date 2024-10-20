@@ -2,11 +2,12 @@ package service
 
 import (
 	"fmt"
+	"log"
+	"strings"
+
 	"github.com/gabrieljuliao/godo/cmd/configuration"
 	"github.com/gabrieljuliao/godo/cmd/os/exec"
-	"log"
-	"os"
-	"strings"
+	"github.com/gabrieljuliao/godo/cmd/utils"
 )
 
 func ExecMacro(argv []string) {
@@ -16,17 +17,21 @@ func ExecMacro(argv []string) {
 		if macro.Name == argv[0] {
 			args := strings.Fields(macro.Arguments)
 
-			for _, arg := range argv[1:] {
-				args = append(args, arg)
-			}
+			args = append(args, argv[1:]...)
 
 			fmt.Println("")
 			fmt.Printf("Macro name: %s\n", macro.Name)
 			fmt.Printf("Description: %s\n", macro.Description)
-			fmt.Printf("Run: %s %s\n\n", macro.Executable, strings.Join(args, " "))
-			fmt.Println("")
+			fmt.Printf("Command(s): %s %s\n\n", macro.Executable, strings.Join(args, " "))
+
+			if macro.IsRiskyAction {
+				if !utils.PromptForConfirmation("WARNING: This Macro is potentially dangerous and has been set to require confirmation before execution.\nAre you sure you want to continue?") {
+					return
+				}
+			}
+
 			exec.Cmd(macro.Executable, args)
-			os.Exit(0)
+			return
 		}
 
 	}
