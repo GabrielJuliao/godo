@@ -6,11 +6,11 @@ A versatile and user-friendly command-line tool designed to streamline your most
 ## Usage
 
 ```shell
-godo [macro name or action] [--godo-<option>] [extras arguments]
+godo [macro name or action] [--godo-<option>] [additional arguments]
 ```
 
 **Note:**
-`[extras arguments]` will be appended to the end of the string arguments, defined in the configuration file.
+`[additional arguments]` will be appended to the end of the string arguments, defined in the configuration file.
 
 ### Examples
 
