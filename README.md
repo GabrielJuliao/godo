@@ -84,7 +84,8 @@ macros:
 
   - name: hello-git-bash
     executable: C:/Program Files/Git/bin/bash.exe
-    arguments: -c C:/Users/elonmusk/Downloads/examples/hello.sh
+    # In order for args to work in Git Bash, they must be quoted
+    arguments: -c 'C:/Users/elonmusk/Downloads/examples/hello.sh arg-1 arg-2 arg-3' 
     description: Hello from Git Bash
 
   - name: interactive-sh
